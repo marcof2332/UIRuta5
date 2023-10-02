@@ -1,0 +1,26 @@
+
+  <div class="mat-elevation-z8">
+    <div class="example-table-container">
+      <table mat-table [dataSource]="dataSource" matSort >
+
+        <!-- Definir columnas dinámicamente -->
+        <ng-container [matColumnDef]="column.header" *ngFor="let column of columns">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column.header }}</th>
+          <td mat-cell *matCellDef="let row">
+              <ng-container *ngIf="column.type === 'date'; else otherColumn">
+                {{ row[column.field] | customDate }}
+              </ng-container>
+              <ng-template #otherColumn>
+                <button mat-icon-button [ngClass]="column.color" (click)="column.action(row)" *ngIf="column.icon && column.action"><mat-icon>{{column.icon}}</mat-icon></button>
+                {{ row[column.field] }}
+              </ng-template>
+          </td>
+        </ng-container>
+
+         <!-- Encabezados de fila y filas -->
+        <tr mat-header-row  *matHeaderRowDef="displayColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+      </table>
+    </div>
+      <mat-paginator [length]="resultsLength" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+  </div>

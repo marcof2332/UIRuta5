@@ -25,9 +25,11 @@
               "src/assets"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {
@@ -87,12 +89,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.css",
+              "bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "6eed45e2-9cc6-456f-ac5a-ed99c340631b"
   }
 }

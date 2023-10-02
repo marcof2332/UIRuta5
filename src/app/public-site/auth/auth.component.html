@@ -1,0 +1,37 @@
+<div>
+  <h1 mat-dialog-title>Agregar licencia</h1>
+  <div mat-dialog-content>
+
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="display: flex;flex-direction: column; margin:1rem auto; max-width: 600px; padding: 1rem;" >
+
+            <mat-form-field [ngStyle]="{ 'padding-bottom.px': !isValidField('user') ? 0 : 50 }">
+              <mat-label>Usuario</mat-label>
+              <input
+              matInput
+              type="text"
+              required
+              formControlName="user">
+              <mat-error *ngIf="isValidField('user')">
+                          {{getErrorMessage('user')}}
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field [ngStyle]="{ 'padding-bottom.px': !isValidField('password') ? 0 : 30 }">
+              <mat-label>Contraseña</mat-label>
+              <input
+              matInput
+              type="text"
+              required
+              inputMode="password"
+              formControlName="password">
+              <mat-error *ngIf="isValidField('password')">{{getErrorMessage('password')}}</mat-error>
+            </mat-form-field>
+
+            <div mat-dialog-actions>
+              <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+              <button mat-button type="submit"><mat-icon>done</mat-icon>Confirmar</button>
+          </div>
+        </form>
+  </div>
+
+</div>

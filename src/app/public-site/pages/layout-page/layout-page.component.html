@@ -1,0 +1,42 @@
+ <mat-toolbar color="primary">
+    <!-- <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button> -->
+    <div class="container">
+      <div class="row">
+
+        <div class="col-md-2 fix-center">
+          <div class="button-container">
+            <button mat-mini-fab color="primary">
+              <mat-icon>home</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-8 fix-center">
+        <button mat-button>
+          Contacto<mat-icon>chat</mat-icon>
+        </button>
+
+        <div style="text-align:center">
+        <button mat-button [matMenuTriggerFor]="menu" >Servicios<mat-icon>keyboard_arrow_down</mat-icon></button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item routerLink="">Tarifas</button>
+            <button mat-menu-item routerLink="">Rastreo</button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <div class="col-md-2 fix-center">
+      <button mat-button (click)="openDialog()">
+          Login<mat-icon>login</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+  </mat-toolbar>
+
+<div class="layout-container">
+    <router-outlet></router-outlet>
+</div>
