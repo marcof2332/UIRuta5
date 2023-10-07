@@ -15,6 +15,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { CustomDatePipePipe } from './pipes/custom-date-pipe.pipe';
 import { StatesComponent } from './pages/states/states.component';
+import { CitiesComponent } from './pages/cities/cities.component';
+import { VehicleConditionComponent } from './pages/vehicle-condition/vehicle-condition.component';
 
 
 export const MY_DATE_FORMATS = {
@@ -41,6 +43,8 @@ export const MY_DATE_FORMATS = {
     EmployeesComponent,
     CustomDatePipePipe,
     StatesComponent,
+    CitiesComponent,
+    VehicleConditionComponent,
   ],
   imports: [
     CommonModule,

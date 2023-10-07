@@ -261,17 +261,6 @@ export class EmployeesComponent implements OnInit {
 
     dialogo1.afterOpened().subscribe(() => {
 
-      // const idControl = dialogo1.componentInstance.myForm.get('ID');
-      // const nameControl = dialogo1.componentInstance.myForm.get('EmpName');
-      // const lastnameControl = dialogo1.componentInstance.myForm.get('EmpLastName');
-      // const dateOfirthControl = dialogo1.componentInstance.myForm.get('DateOfBirth');
-      // const userControl = dialogo1.componentInstance.myForm.get('EmpUser');
-      // const passwordControl = dialogo1.componentInstance.myForm.get('EmpPassword');
-      // const celphoneControl = dialogo1.componentInstance.myForm.get('Celphone');
-      // const addressControl = dialogo1.componentInstance.myForm.get('EmpAddress');
-      // const roleControl = dialogo1.componentInstance.myForm.get('EmpRole');
-      // const licenceControl = dialogo1.componentInstance.myForm.get('Licence');
-
       const controlsToSet = [
         { controlName: 'ID', value: item.ID, disable: true },
         { controlName: 'EmpName', value: item.EmpName },

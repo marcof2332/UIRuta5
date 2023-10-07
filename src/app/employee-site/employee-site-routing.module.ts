@@ -5,6 +5,8 @@ import { ManageLicenceComponent } from './pages/Licences/manage-licence.componen
 import { RoleManagementComponent } from './pages/Roles/role-management.component';
 import { EmployeesComponent } from './pages/employees/employees.component';
 import { StatesComponent } from './pages/states/states.component';
+import { CitiesComponent } from './pages/cities/cities.component';
+import { VehicleConditionComponent } from './pages/vehicle-condition/vehicle-condition.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,8 @@ const routes: Routes = [
       { path: 'role-mng', component: RoleManagementComponent },
       { path: 'emp-mng', component: EmployeesComponent },
       { path: 'st-mng', component: StatesComponent },
+      { path: 'city-mng', component: CitiesComponent },
+      { path: 'vst-mng', component: VehicleConditionComponent },
     ]
   }
 ];

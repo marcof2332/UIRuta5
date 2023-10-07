@@ -1,0 +1,25 @@
+<div class="example-container">
+  <h2>Administración de ciudades</h2>
+
+  <mat-form-field >
+    <mat-label>Departamentos</mat-label>
+    <mat-select (selectionChange)="onStateSelectionChange($event)">
+      <mat-option [value]="-1">Sin seleccionar</mat-option>
+      <mat-option *ngFor="let state of stateList" [value]="state.IdState">
+        {{state.StateName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+    <ng-container *ngIf="dataLoaded">
+        <app-shared-table
+        [dataSource]="filteredData"
+        [columns]="columns">
+        [resultsLength]="resultsLength"
+        </app-shared-table>
+    </ng-container>
+
+    <div class="button-container">
+      <button mat-raised-button (click)="openDialogToAdd()"><mat-icon>save</mat-icon>Agregar Ciudad</button>
+    </div>
+</div>
