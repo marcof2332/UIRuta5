@@ -13,7 +13,7 @@ export class publicService {
 
   public handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 500)
-      return throwError('Error en el servidor. Comunicarse con soporte.');
+    {console.log(error.error); return throwError('Error en el servidor. Comunicarse con soporte.' + error.error.Message)}
     else if (error.status === 400)
       { console.log(error.error); return throwError(error.error.Message);}
     else if (error.status === 401) {

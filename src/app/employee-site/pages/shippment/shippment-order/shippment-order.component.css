@@ -1,0 +1,62 @@
+.demo-stepper {
+  margin-top: 8px;
+}
+
+.demo-form-field {
+  margin-top: 16px;
+}
+
+.sh-radiogroup {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.demo-radio-button {
+  margin: 5px;
+}
+
+.example-container {
+  position: relative;
+  margin: auto;
+  width: 70%;
+  margin-top: 50px;
+  overflow-y: auto;
+}
+
+.orderForm {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.map-s {
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.fwhid {
+  width: 100%;
+}
+
+.zone-container {
+  border: 1px solid #ccc; /* Borde alrededor del contenedor */
+  padding: 10px; /* Espaciado interno */
+  margin-bottom: 20px; /* Margen inferior para separar de otros elementos */
+
+  /* Otros estilos según tus preferencias */
+}
+
+.zone-container .legend {
+  color: #333; /* Color del texto del label */
+  padding: 0 10px; /* Espaciado del label */
+  background-color: #fff; /* Fondo del label */
+}
+
+.lgn {
+    font-size: 1rem !important;
+}
+
+.m {
+  margin-top: 20px;
+}

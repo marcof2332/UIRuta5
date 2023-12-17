@@ -19,19 +19,20 @@ export class LayoutPageComponent {
     { label: 'Departamentos', icon:'search', url: 'st-mng'},
     { label: 'Ciudades', icon:'search', url: 'city-mng'},
     { label: 'Zonas', icon:'search', url: 'zone-mng'},
-    { label: 'Establecimientos', icon:'search', url: 'estab-mng'},
-    { label: 'Vehiculos', icon:'search', url: 'vehicle-mng', children: [
+    { label: 'Establecimientos', icon:'search', url: 'branch-mng'},
+    { label: 'Vehiculos', icon:'search', children: [
       { label: 'Estados de vehiculo', icon:'search', url: 'vst-mng'},
       { label: 'Gestion de Vehiculos', icon:'search', url: 'vehicle-mng'}
     ]},
-    { label: 'Gestion de paquetes', icon:'search', url: 'package-mng'},
+    { label: 'Gestion de paquetes', icon:'search', url: 'packagety-mng'},
     { label: 'Gestion de envíos', icon:'search', children: [
       { label: 'Estados de envío', icon:'search', url: 'shst-mng'},
       { label: 'Ingreso de envío', icon:'search', url: 'shpp-mng'},
-      { label: 'Listado de envíos', icon:'search', url: 'shppmnts'},
+      { label: 'Listado de envíos', icon:'search', url: 'shippment-list'},
       { label: 'Crear ruta de envío', icon:'search', url: 'shpp-rt'},
     ]},
     { label: 'Gestion de clientes', icon:'search', url: 'customer-mng'},
+    { label: 'Mapa Test', icon:'search', url: 'app-test-map'},
   ]
 
   public ENCsidebarItems = [

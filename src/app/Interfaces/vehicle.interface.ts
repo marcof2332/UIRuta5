@@ -4,5 +4,6 @@ export interface Vehicle {
   vRegistration       : string;
   BrandModel          : string;
   VehicleWeight       : number;
-  Condition           : number
+  Condition           : number;
+  CondName?           : string; // Nuevo campo para el nombre del estado
 }

@@ -134,7 +134,7 @@ export class CitiesComponent implements OnInit {
     this.selectedStateId = event.value;
     console.log(this.dataSource.data);
     if (this.selectedStateId === -1) {
-      // Mostrar todos los datos originales
+      //Mostrar todos los datos originales
       this.filteredData.data = this.dataSource.data.map(city => {
         const state = this.stateList.find(s => s.IdState === city.CityState);
         return { ...city, StateName: state ? state.StateName : '' };
@@ -142,19 +142,8 @@ export class CitiesComponent implements OnInit {
     } else if (this.selectedStateId) {
       // Filtrar los datos según el IdState seleccionado y agregar nombres de estados
       this.filteredData.data = this.dataSource.data
-        .filter(city => city.CityState === this.selectedStateId)
-        .map(city => {
-          const state = this.stateList.find(s => s.IdState === city.CityState);
-          return { ...city, StateName: state ? state.StateName : '' };
-        });
-    } else {
-      // En caso de que no se haya seleccionado ningún estado, muestra todos los datos originales
-      this.filteredData.data = this.dataSource.data.map(city => {
-        const state = this.stateList.find(s => s.IdState === city.CityState);
-        return { ...city, StateName: state ? state.StateName : '' };
-      });
+        .filter(city => city.CityState === this.selectedStateId);
     }
-    // Actualiza la longitud de los resultados
     this.resultsLength = this.filteredData.data.length;
   }
 

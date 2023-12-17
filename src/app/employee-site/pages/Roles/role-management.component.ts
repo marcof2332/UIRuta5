@@ -14,7 +14,7 @@ import { ValidatorsService } from '../../services/validators.service';
 import { SharedInput } from '../../components/component-interfaces/shared-input.interface';
 
 @Component({
-  selector: 'app-role-management',
+  selector: 'role-mng',
   templateUrl: './role-management.component.html',
   styleUrls: ['./role-management.component.css']
 })

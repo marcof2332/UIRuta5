@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SharedInput } from '../component-interfaces/shared-input.interface';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 import { ValidatorsService } from '../../services/validators.service';
 
@@ -66,27 +67,10 @@ export class SharedFormComponent implements OnInit {
 
   // Método que se llama cuando se envía el formulario
   handleSubmit(): void {
-    console.log('manejando el submit')
-
-    // console.log('Campo ID válido:', this.myForm.get('ID')?.valid);
-    // console.log('Campo EmpUser válido:', this.myForm.get('EmpUser')?.valid);
-    // console.log('Campo EmpPassword válido:', this.myForm.get('EmpPassword')?.valid);
-    // console.log('Campo EmpName válido:', this.myForm.get('EmpName')?.valid);
-    // console.log('Campo EmpLastName válido:', this.myForm.get('EmpLastName')?.valid);
-    // console.log('Campo DateOfBirth válido:', this.myForm.get('DateOfBirth')?.value);
-    // console.log('Campo DateOfBirth válido:', this.myForm.get('DateOfBirth')?.valid);
-    // console.log('Campo Celphone válido:', this.myForm.get('Celphone')?.valid);
-    // console.log('Campo EmpAddress válido:', this.myForm.get('EmpAddress')?.valid);
-    // console.log('Campo DateOfBirth válido:', this.myForm.get('EmpRole')?.value);
-    // console.log('Campo EmpRole válido:', this.myForm.get('EmpRole')?.valid);
-    // console.log('Campo Licence válido:', this.myForm.get('Licence')?.valid);
-
     if (this.myForm.valid) {
-      console.log('validando formulario')
       const formValues = this.myForm.value;
       console.log(formValues)
       this.formSubmit.emit(formValues); // Emitir el evento formSubmit al componente padre
-      console.log('luego de emitir los valores de formulario')
       this.clearFormFields();
     }
 }

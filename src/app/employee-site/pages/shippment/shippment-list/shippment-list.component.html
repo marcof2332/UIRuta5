@@ -1,0 +1,43 @@
+<div class="example-container">
+  <h2>Administración de Pedidos</h2>
+
+  <mat-form-field>
+    <mat-label>Departamento</mat-label>
+    <mat-select (valueChange)="loadCities($event)" (selectionChange)="selectionchange()">
+        <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+          {{ statesLabelList[i] }}
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Ciudad</mat-label>
+    <mat-select #cities (valueChange)="loadZones($event)">
+      <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+        {{ citiesLabelList[i] }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Zona</mat-label>
+    <mat-select #zone (selectionChange)="onZoneSelectionChange($event)">
+      <mat-option [value]="-1">Sin seleccionar</mat-option>
+      <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+        {{ zonesLabelList[i] }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+    <ng-container *ngIf="dataLoaded">
+        <app-shared-table
+        [dataSource]="filteredlist"
+        [columns]="columns">
+        [resultsLength]="resultsLength"
+        </app-shared-table>
+    </ng-container>
+
+    <!-- <div class="button-container">
+      <button mat-raised-button (click)="openDialogToAdd()"><mat-icon>save</mat-icon>Agregar Sucursal</button>
+    </div> -->
+</div>

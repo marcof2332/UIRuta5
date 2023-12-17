@@ -1,0 +1,49 @@
+<div mat-dialog-content>
+  <form class="shared-form" [formGroup]="myForm" (ngSubmit)="handleSubmit()">
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('ZoneName') ? 0 : 40 }">
+      <input matInput formControlName="ZoneName" placeholder="Nombre" type="text">
+      <mat-error *ngIf="isValidField('ZoneName')">
+        {{getErrorMessage('ZoneName')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ciudad</mat-label>
+      <mat-select formControlName="City">
+          <mat-option *ngFor="let item of cityValueList; let i = index" [value]="item" >
+            {{ cityLabelList[i] }}
+          </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('City')">
+        {{getErrorMessage('City')}}
+      </mat-error>
+    </mat-form-field>
+
+    <ng-container >
+      <google-map   [center]="center"
+                    [zoom]="zoom"
+                    (mapClick)="addMarker($event)">
+
+      <map-marker  *ngFor="let markerPosition of markerPositions; let i = index"
+                    [position]="markerPosition"
+                    [options]="markerOptions"
+                    (click)="markerClick(i)"></map-marker>
+
+      <map-polygon  [paths]="polygonPoints"></map-polygon>
+      </google-map>
+
+      <div mat-dialog-actions id="map-buttons" class="button-container">
+        <button mat-raised-button id="delMarkl" (click)="removeLastMarker()">Deshacer</button>
+        <button mat-raised-button id="clearPolygon" (click)="clearPolygon()">Limpiar</button>
+      </div>
+    </ng-container>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+      <button mat-button type="submit"><mat-icon>done</mat-icon>Confirmar</button>
+    </div>
+  </form>
+
+</div>

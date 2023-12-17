@@ -17,14 +17,28 @@ import { CustomDatePipePipe } from './pipes/custom-date-pipe.pipe';
 import { StatesComponent } from './pages/states/states.component';
 import { CitiesComponent } from './pages/cities/cities.component';
 import { VehicleConditionComponent } from './pages/vehicle-condition/vehicle-condition.component';
-
+import { VehiclesComponent } from './pages/vehicles/vehicles.component';
+import { PackageTypeComponent } from './pages/package-type/package-type.component';
+import { CustomerComponent } from './pages/customer/customer.component';
+import { SharedMapComponent } from './components/shared-route-map/shared-route-map.component';
+import { CustomerFormComponent } from './components/customer-form/customer-form.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { pointPipe } from './pipes/pointPipe.pipe';
+import { TestMapComponent } from './pages/test-map/test-map.component';
+import { SharedSimpleMapComponent } from './components/shared-simple-map/shared-simple-map.component';
+import { SharedZoneMapComponent } from './components/shared-zone-map/shared-zone-map.component';
+import { ZonesComponent } from './pages/zones/zones.component';
+import { ZoneFormComponent } from './components/zone-form/zone-form.component';
+import { BranchOfficeComponent } from './pages/branch-office/branch-office.component';
+import { OfficeFormComponent } from './components/office-form/office-form.component';
+import { ShippmentListComponent } from './pages/shippment/shippment-list/shippment-list.component';
+import { ShippmentOrderComponent } from './pages/shippment/shippment-order/shippment-order.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
     dateInput: 'YYYY-MM-DD',
   },
   display: {
-
     dateInput: 'YYYY-MM-DD',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
@@ -45,12 +59,28 @@ export const MY_DATE_FORMATS = {
     StatesComponent,
     CitiesComponent,
     VehicleConditionComponent,
+    VehiclesComponent,
+    PackageTypeComponent,
+    CustomerComponent,
+    SharedMapComponent,
+    CustomerFormComponent,
+    pointPipe,
+    TestMapComponent,
+    SharedSimpleMapComponent,
+    SharedZoneMapComponent,
+    ZonesComponent,
+    ZoneFormComponent,
+    BranchOfficeComponent,
+    OfficeFormComponent,
+    ShippmentListComponent,
+    ShippmentOrderComponent,
   ],
   imports: [
     CommonModule,
     EmployeeSiteRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    GoogleMapsModule
   ],
   providers: [
       { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

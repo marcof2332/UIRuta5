@@ -1,0 +1,24 @@
+#map {
+  height:100%;
+  width:100%;
+  position: absolute;
+  z-index: 50;
+}
+.matnav{
+  width: 30%;
+  margin: auto;
+  position: absolute;
+  z-index: 100;
+  background: transparent;
+}
+.section{
+  margin-bottom: 3px;
+}
+.details{
+  margin-top: 60px;
+}
+@media all and (max-width: 767px) {
+  .matnav{
+    width: 70%;
+  }
+}

@@ -20,7 +20,10 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-
+import {MatExpansionModule} from '@angular/material/expansion';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {MatRadioModule} from '@angular/material/radio';
+import { MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   exports: [
@@ -43,7 +46,14 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatTableModule,
     MatPaginatorModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatExpansionModule,
+    NgxMaterialTimepickerModule,
+    MatRadioModule,
+    MatStepperModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
   ]
 })
 export class MaterialModule { }

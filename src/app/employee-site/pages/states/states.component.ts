@@ -28,7 +28,6 @@ export class StatesComponent {
     private fb: FormBuilder, //importo un servicio para que me ayude a crear dinamicamente la form.
     private dialog: MatDialog, //Me permite crear un dialog, que voy a utilizar a la hora de eliminar
     private snackBar: MatSnackBar,
-    private validatorsService: ValidatorsService,
     ) { }
 
   //Table
@@ -200,6 +199,7 @@ export class StatesComponent {
         const st: State = {
           IdState: item.IdState,
           StateName: formValues.StateName,
+          Cities: item.Cities
         };
 
         //Metodo Para modificar una licencia

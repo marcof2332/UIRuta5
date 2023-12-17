@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Licence } from '../../Interfaces/licence.interface';
 import { Observable, catchError, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { enviroments } from 'src/enviroments/enviroments';

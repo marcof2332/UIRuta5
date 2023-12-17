@@ -1,0 +1,321 @@
+
+<div class="example-container">
+  <h2>Ingreso de Pedidos</h2>
+
+    <mat-horizontal-stepper
+    [linear]="true"
+    #stepper
+    [orientation]="(stepperOrientation | async)!">
+      <!-- Step 1 -->
+      <mat-step>
+        <form id="orderForm" [formGroup]="myForm">
+          <ng-template matStepLabel>Paso 1</ng-template>
+          <mat-radio-group class="sh-radiogroup" (change)="onRadioChange($event)">
+            <mat-radio-button [checked]="true" value="retiroDomicilio">Retiro a Domicilio</mat-radio-button>
+            <mat-radio-button value="envioVentanilla">Envío por Ventanilla</mat-radio-button>
+          </mat-radio-group>
+          <div>
+            <button mat-button matStepperNext >Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 2 - Retiro a Domicilio -->
+      <mat-step [stepControl]="myForm">
+        <ng-template matStepLabel>Paso 2</ng-template>
+
+        <div class="example-container">
+
+        <form class="orderForm" *ngIf=" this.type === 'retiroDomicilio'" [formGroup]="getFormGroup()">
+            <!-- Campos para Retiro a Domicilio -->
+
+            <table>
+              <tr>
+              <td>
+                <mat-form-field class="fwhid">
+                  <mat-label>Inicio disponibilidad (Opcional)</mat-label>
+                  <input matInput type="time" formControlName="StartTime">
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field class="fwhid">
+                  <mat-label>Final disponibilidad (Opcional)</mat-label>
+                  <input matInput type="time" formControlName="EndTime">
+                </mat-form-field>
+              </td>
+              </tr></table>
+              <fieldset class="zone-container">
+                <legend class="lgn">Zona de Retiro</legend>
+              <table><tr>
+                <td>
+                  <mat-form-field class="fwhid">
+                    <mat-label>Departamento</mat-label>
+                    <mat-select #stateselect
+                                (valueChange)="loadCities($event)"
+                                [disabled]="!departamentoSelectEnabled">
+                        <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+                          {{ statesLabelList[i] }}
+                        </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field class="fwhid">
+                    <mat-label>Ciudad</mat-label>
+                    <mat-select #cities
+                                (valueChange)="loadZones($event)"
+                                [disabled]="!ciudadSelectEnabled">
+                        <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+                        {{ citiesLabelList[i] }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+                <td>
+                  <mat-form-field>
+                    <mat-label>Zona</mat-label>
+                    <mat-select #zone
+                                (valueChange)="onSelectChange($event)"
+                                [disabled]="!zonaSelectEnabled">
+                      <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+                        {{ zonesLabelList[i] }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </tr></table>
+            </fieldset>
+            <!-- Mapa -->
+            <ng-container *ngIf="mapEnabled" >
+              <google-map   class="map-s"
+                            #map
+                            [center]="center"
+                            [zoom]="zoom">
+
+              <map-marker [position]="markerPosition"></map-marker>
+
+              <map-polygon [paths]="polygonPoints"
+                           [options]="polygonOptions"
+                           (polygonClick)="addMarker($event)"
+                           ></map-polygon>
+              </google-map>
+            </ng-container>
+
+            <table><tr>
+              <td>
+              <!-- Direccion -->
+              <mat-form-field
+                  class="fwhid"
+                  [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddress') ? 0 : 40 }">
+                <input
+                    type="text"
+                    matInput
+                    placeholder="Dirección"
+                    formControlName="PickupAddress">
+                <mat-error *ngIf="isValidField('PickupAddress')">
+                  {{getErrorMessage('PickupAddress')}}
+                </mat-error>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="fwhid m">
+                <mat-label>Comentarios</mat-label>
+                <textarea matInput formControlName="Note"></textarea>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+          <td>
+            <mat-form-field class="fwhid"
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('Sender') ? 0 : 40 }">
+              <input matInput formControlName="Sender" placeholder="Remitente" type="number">
+              <mat-error *ngIf="isValidField('Sender')">
+                {{getErrorMessage('Sender')}}
+              </mat-error>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="fwhid"
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('Recipient') ? 0 : 40 }">
+              <input matInput formControlName="Recipient" placeholder="Destinatario" type="number">
+                <mat-error *ngIf="isValidField('Recipient')">
+                  {{getErrorMessage('Recipient')}}
+                </mat-error>
+            </mat-form-field>
+            </td>
+          </tr></table>
+          <table><tr>
+            <td>
+              <mat-form-field class="fwhid"
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('RecipientCel') ? 0 : 40 }">
+                <input matInput formControlName="RecipientCel" placeholder="Celular" type="text">
+                <mat-error *ngIf="isValidField('RecipientCel')">
+                  {{getErrorMessage('RecipientCel')}}
+                </mat-error>
+              </mat-form-field>
+            </td>
+          </tr></table>
+          <fieldset class="zone-container">
+            <legend class="lgn">Zona del envio</legend>
+          <table><tr>
+            <td>
+              <mat-form-field class="fwhid">
+                <mat-label>Departamento</mat-label>
+                <mat-select #stateselect
+                            (valueChange)="loadCities($event)"
+                            [disabled]="!departamentoSelectEnabled">
+                    <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+                      {{ statesLabelList[i] }}
+                    </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="fwhid">
+                <mat-label>Ciudad</mat-label>
+                <mat-select #cities
+                            (valueChange)="loadZones($event)"
+                            [disabled]="!ciudadSelectEnabled">
+                    <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+                    {{ citiesLabelList[i] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field>
+                <mat-label>Zona</mat-label>
+                <mat-select #zone
+                            (valueChange)="onSelectChange($event)"
+                            [disabled]="!zonaSelectEnabled">
+                  <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+                    {{ zonesLabelList[i] }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </td>
+          </tr></table>
+        </fieldset>
+          <!-- Direccion -->
+          <mat-form-field
+              class="fwhid"
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddress') ? 0 : 40 }">
+            <input
+                type="text"
+                matInput
+                placeholder="Dirección"
+                formControlName="PickupAddress">
+            <mat-error *ngIf="isValidField('PickupAddress')">
+              {{getErrorMessage('PickupAddress')}}
+            </mat-error>
+          </mat-form-field>
+          </form>
+
+          <form class="orderForm" *ngIf="this.type === 'envioVentanilla'" [formGroup]="getFormGroup()" >
+            <!-- Campos para Envío por Ventanilla -->
+          </form>
+
+          <div>
+            <button mat-button matStepperPrevious (click)="resetForm()">Back</button>
+            <button mat-button matStepperNext (click)="firstSubmit()">Next</button>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 3 - Datos de Envío -->
+      <mat-step [stepControl]="getFormGroup()">
+        <ng-template matStepLabel>Paso 3</ng-template>
+        <form class="orderForm" [formGroup]="getFormGroup()">
+
+           <!-- <mat-form-field
+          [ngStyle]="{ 'padding-bottom.px': !isValidField('Sender') ? 0 : 40 }">
+            <input matInput formControlName="Sender" placeholder="Remitente" type="number">
+            <mat-error *ngIf="isValidField('Sender')">
+              {{getErrorMessage('Sender')}}
+            </mat-error>
+          </mat-form-field> -->
+
+          <!--<mat-form-field
+          [ngStyle]="{ 'padding-bottom.px': !isValidField('Recipient') ? 0 : 40 }">
+            <input matInput formControlName="Recipient" placeholder="Destinatario" type="number">
+            <mat-error *ngIf="isValidField('Recipient')">
+              {{getErrorMessage('Recipient')}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+          [ngStyle]="{ 'padding-bottom.px': !isValidField('RecipientCel') ? 0 : 40 }">
+            <input matInput formControlName="Celphone" placeholder="Celular" type="text">
+            <mat-error *ngIf="isValidField('RecipientCel')">
+              {{getErrorMessage('RecipientCel')}}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Departamento</mat-label>
+            <mat-select #statesSh
+                        (valueChange)="loadCities($event)"
+                        [disabled]="!departamentoSelectEnabled">
+                <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+                  {{ statesLabelList[i] }}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Ciudad</mat-label>
+            <mat-select #citiesSh
+                        (valueChange)="loadZones($event)"
+                        [disabled]="!ciudadSelectEnabled">
+                <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+                {{ citiesLabelList[i] }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Zona</mat-label>
+            <mat-select #zoneSh
+                        (valueChange)="onSelectChange($event)"
+                        [disabled]="!zonaSelectEnabled">
+              <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+                {{ zonesLabelList[i] }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>-->
+
+          <!-- Direccion -->
+          <!-- <mat-form-field
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('TargetAddress') ? 0 : 40 }">
+            <input
+                type="text"
+                matInput
+                placeholder="Dirección"
+                formControlName="PickupAddress">
+            <mat-error *ngIf="isValidField('TargetAddress')">
+              {{getErrorMessage('TargetAddress')}}
+            </mat-error>
+          </mat-form-field> -->
+
+           <!-- Mapa -->
+           <ng-container *ngIf="mapEnabled" >
+            <google-map   #map
+                          [center]="center"
+                          [zoom]="zoom">
+
+            <map-marker [position]="markerPosition"></map-marker>
+
+            <map-polygon [paths]="polygonPoints"
+                         [options]="polygonOptions"
+                         (polygonClick)="addMarker($event)"
+                         ></map-polygon>
+            </google-map>
+          </ng-container>
+
+        </form>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+</div>

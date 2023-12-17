@@ -73,16 +73,12 @@ export class EmployeesComponent implements OnInit {
   }
 
   async getRoles() {
-    console.log('Voy a buscar los roles al back');
     try {
       const result = await this.roles.listRoles().toPromise();
 
       if (result) {
-        console.log('Dentro del result de roles.');
         this.rolesValueList = result.map((role) => role.Code);
         this.rolesLabelList = result.map((role) => role.RolesDescription);
-        console.log(this.rolesValueList);
-        console.log(this.rolesLabelList);
       } else {
         console.error('La respuesta de roles es undefined.');
       }
@@ -92,16 +88,12 @@ export class EmployeesComponent implements OnInit {
   }
 
   async getLicences() {
-    console.log('Voy a buscar las licencias al back');
     try {
       const result = await this.licences.listLicences().toPromise();
 
       if (result) {
-        console.log('Dentro del result de licencias.');
         this.licencesValueList = result.map((licence) => licence.Category);
         this.licencesLabelList = result.map((licence) => licence.Category);
-        console.log(this.licencesValueList);
-        console.log(this.licencesLabelList);
       } else {
         console.error('La respuesta de licencias es undefined.');
       }
