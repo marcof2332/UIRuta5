@@ -71,7 +71,7 @@ export class CustomerFormComponent {
       }
   }
 
-  clearFormFields(): void {
+  clearFormFields() {
     this.markFieldsAsUntouched(this.myForm); // Marcar todos los campos como no tocados
     this.myForm.reset(); // Borrar los valores de todos los campos
   }

@@ -108,30 +108,6 @@ getTableColumns(): TableColumn[] {
   ];
 };
 
-// getFormFields(): SharedInput[] {
-//   return [
-//     { field: 'DocRut',label: 'Cedula/RUT', type: 'number', formControlName: 'DocRut' },
-//     { field: 'CustomerName', label: 'Nombre', type: 'text', formControlName: 'CustomerName' },
-//     { field: 'CLastName', label: 'Apellido', type: 'text', formControlName: 'CLastName' },
-//     { field: 'Celphone', label: 'Celular', type: 'text', formControlName: 'Celphone' },
-//     {
-//       field: 'ClientState',
-//       label: 'Departamento',
-//       type: 'select',
-//       formControlName: 'ClientState',
-//       optionsValue: this.statesValueList,
-//       optionsLabel: this.statesLabelList,
-//       loadOptions: (selectedValue) => {
-//         console.log(selectedValue);
-//         this.loadCities(selectedValue);
-//       },
-//     },
-//     { field: 'ClientCity', label: 'Ciudad', type: 'select', formControlName: 'ClientCity', optionsValue: this.citiesValueList, optionsLabel: this.citiesLabelList },
-//     { field: 'ClientZone', label: 'Zona', type: 'select', formControlName: 'ClientZone', optionsValue: this.zonesValueList, optionsLabel: this.zonesLabelList },
-//     { field: 'CliAddress', label: 'Direccion', type: 'text', formControlName: 'CliAddress' },
-//   ];
-// };
-
 //Metodo para mostrar un snackbar con un mensaje
 showSnackBar( message: string ): void {
   this.snackBar.open( message, 'cerrar', {
@@ -265,7 +241,7 @@ console.log(this.myForm)
 
       //Crear una objeto con los valores del formulario reutilizable.
       const c: Customer = {
-        DocRut: formValues.DocRut,
+        DocRut: item.DocRut,
         CustomerName: formValues.CustomerName,
         CLastName: formValues.CLastName,
         Celphone: formValues.Celphone,

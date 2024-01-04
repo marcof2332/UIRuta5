@@ -349,12 +349,4 @@ export class ShippmentOrderComponent implements OnInit {
   }
 
 
-
-
-
-
-
-
-
-
 }

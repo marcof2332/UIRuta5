@@ -34,7 +34,10 @@ export class ValidatorsService {
     phonePattern: 'El nro. de telefono debe contener 8 digitos.',
     platePattern: 'La patente debe estar compuesta por 3 letras y 4 numeros.',
     docRut: 'El campo debe contener 7 u 8 caracteres de ser una cedula o 12 de ser un RUT.',
-    PickupAddress: 'El campo debe contener al menos 3 caracteres.'
+    min0: 'El valor minimo es 0.',
+    min3: 'El campo debe contener al menos 3 caracteres.',
+    min2: 'El campo debe contener al menos 2 caracteres.',
+    password: 'El campo debe contener 8 caracteres.',
   };
 
   public getErrorMessage(form: FormGroup, field: string): string | null {
@@ -61,9 +64,34 @@ export class ValidatorsService {
         } else if (errors['pattern'] && field ==='Phone') {
           return this.errorMessages.phonePattern;
         } else if (errors['pattern'] && field ==='PickupAddress') {
-          console.log("test")
-          return this.errorMessages.PickupAddress;
-        }
+          return this.errorMessages.min3;
+        } else if (field ==='EmpPassword') {
+          return this.errorMessages.password;
+        } else if (field ==='EmpUser') {
+          return this.errorMessages.min3;
+        } else if (field ==='EmpName') {
+          return this.errorMessages.min2;
+        } else if (field ==='EmpLastName') {
+          return this.errorMessages.min2;
+        } else if (field ==='EmpAddress') {
+          return this.errorMessages.min3;
+        } else if (field ==='BranchAddress') {
+          return this.errorMessages.min3;
+        } else if (field ==='TypeDescription') {
+          return this.errorMessages.min3;
+        } else if (field ==='MinWeight') {
+          return this.errorMessages.min0;
+        } else if (field ==='MaxWeight') {
+          return this.errorMessages.min0;
+        } else if (field ==='Amount') {
+          return this.errorMessages.min0;
+        } else if (field ==='CustomerName') {
+          return this.errorMessages.min2;
+        } else if (field ==='CLastName') {
+          return this.errorMessages.min2;
+        } else if (field ==='CliAddress') {
+          return this.errorMessages.min2;
+        }  
       }
     }
     return null;

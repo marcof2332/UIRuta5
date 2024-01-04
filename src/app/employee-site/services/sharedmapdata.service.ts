@@ -15,9 +15,9 @@ export class SharedmapdataService {
       console.error('Debe proporcionar al menos 3 coordenadas para crear un polígono.');
       return null;
     }
-
-    const wellKnownText = `POLYGON((${coordinates.map(coord => `${coord.lng} ${coord.lat}`).join(', ')}))`;
-
+    
+    const wellKnownText = `POLYGON((${coordinates.map(coord => `${coord.lat} ${coord.lng}`).join(', ')}))`;
+    
     const geoPolygon: SpatialAttribute = {
         CoordinateSystemId: 4326,
         WellKnownText: wellKnownText,

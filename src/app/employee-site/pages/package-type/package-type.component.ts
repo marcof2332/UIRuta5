@@ -89,7 +89,7 @@ public myForm: FormGroup = this.fb.group({
       { header: 'Peso min.', field: 'MinWeight', type: 'text' },
       { header: 'Peso max.', field: 'MaxWeight', type: 'text' },
       { header: 'Precio', field: 'Amount', type: 'text' },
-      { header: ' ', field: 'delete', type: 'button', color: 'mat-warn', icon: 'delete', action: (item) => this.deleteVCondition(item.Code) },
+      { header: ' ', field: 'delete', type: 'button', color: 'mat-warn', icon: 'delete', action: (item) => this.deletePtype(item.IdPackageType) },
       { header: '  ', field: 'edit', type: 'button', color: 'mat-primary', icon: 'edit_square', action: (item) => this.openDialogToModify(item) }
     ];
   };
@@ -240,12 +240,13 @@ public myForm: FormGroup = this.fb.group({
     });
   }
 
-  deleteVCondition(pt: number) {
+  deletePtype(pt: number) {
+    
+    console.log(pt)
     //ConfirmDialogComponent es el componente para solicitar la confirmacion.
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: "Este tipo se eliminara permanentemente ¿Esta seguro que desea continuar?"
     });
-
     dialogRef.afterClosed()
     .subscribe(
     (confirmado: boolean) => {

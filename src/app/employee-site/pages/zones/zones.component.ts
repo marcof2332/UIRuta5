@@ -186,14 +186,11 @@ export class ZonesComponent {
             IdZone: 0,
             ZoneName: formValues.ZoneName,
             City: formValues.City,
-            //ZoneShape: checkZoneShape,
             WellKnownValue: checkZoneShape.WellKnownValue,
             CoordinateSystemId: checkZoneShape.CoordinateSystemId,
             BranchOffices: undefined,
           };
 
-          console.log(z);
-          //Metodo Para agregar una licencia
           this.zServ.addZone( z ).subscribe(
             (response) => {
             this.showSnackBar(`La zona fue agregada satisfactoriamente`);
