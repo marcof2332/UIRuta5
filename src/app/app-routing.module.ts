@@ -21,6 +21,10 @@ const routes: Routes = [
     path: 'public-site',
     loadChildren: () => import('./public-site/public-site.module').then(m => m.PublicSiteModule ), //como es con lazyLoad le pongo el loadchildren
   },
+  {
+    path: '**', // si no hay definida una ruta lo mandamos al public site
+    redirectTo: 'public-site',
+  }
 ];
 
 @NgModule({

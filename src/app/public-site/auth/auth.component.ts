@@ -15,6 +15,9 @@ import { Router } from '@angular/router';
 })
 export class AuthComponent {
 
+  public isLoading: boolean = false;
+  private user?: User;
+
  constructor(
     public dialogRef: MatDialogRef<AuthComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User,
@@ -23,7 +26,6 @@ export class AuthComponent {
     private snackBar: MatSnackBar,  //me permite utilizar snackbars
     private router: Router,
   ) {}
-    private user?: User;
 
     public myForm: FormGroup = this.fb.group({
       // las 3 partes de esta validacion es '' = valor inicial, [] = validador sincronos y [] = validadores asincronos o sea name: ['', [], []]
@@ -53,12 +55,14 @@ export class AuthComponent {
 
       if( this.myForm.invalid ) return;
       console.log('Antes de ejecutar el logueo');
+      this.isLoading = true;
 
       this.validatorsService.loginEmployee( this.currentUser )
       .subscribe( response => {
           console.log('Luego de ejecutar el metodo');
           //Si se loguea satisfactoriamente
           this.dialogRef.close(true);
+          this.isLoading = false;
           this.router.navigate(['/employee-site']); // Redirigir al emp-site
           console.log(response);
         },
@@ -67,6 +71,7 @@ export class AuthComponent {
             this.showSnackBar(`Ocurrio un error al intentar loguear al usuario.`);
             console.error('Server-side error message:', error.error.Message);
             console.error('Status-code:', error.error.status);
+            this.isLoading = false;
             this.dialogRef.close(false);
           }
         }

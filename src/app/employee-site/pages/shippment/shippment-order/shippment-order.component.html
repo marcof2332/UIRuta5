@@ -75,7 +75,7 @@
                   <mat-form-field>
                     <mat-label>Zona</mat-label>
                     <mat-select #zone
-                                (valueChange)="onSelectChange($event)"
+                                (valueChange)="onSelectChange($event, 0)"
                                 [disabled]="!zonaSelectEnabled">
                       <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
                         {{ zonesLabelList[i] }}
@@ -86,17 +86,17 @@
               </tr></table>
             </fieldset>
             <!-- Mapa -->
-            <ng-container *ngIf="mapEnabled" >
+            <ng-container *ngIf="retirementZoneMapEnabled" >
               <google-map   class="map-s"
                             #map
-                            [center]="center"
-                            [zoom]="zoom">
+                            [center]="retirementZoneCenter"
+                            [zoom]="retirementZoneZoom">
 
-              <map-marker [position]="markerPosition"></map-marker>
+              <map-marker [position]="retirementZoneMarkerPosition"></map-marker>
 
-              <map-polygon [paths]="polygonPoints"
-                           [options]="polygonOptions"
-                           (polygonClick)="addMarker($event)"
+              <map-polygon [paths]="retirementZonePolygonPoints"
+                           [options]="retirementZonePolygonOptions"
+                           (polygonClick)="addMarker($event, 0)"
                            ></map-polygon>
               </google-map>
             </ng-container>
@@ -106,13 +106,13 @@
               <!-- Direccion -->
               <mat-form-field
                   class="fwhid"
-                  [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddress') ? 0 : 40 }">
+                  [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddressRetirementArea') ? 0 : 40 }">
                 <input
                     type="text"
                     matInput
                     placeholder="Dirección"
-                    formControlName="PickupAddress">
-                <mat-error *ngIf="isValidField('PickupAddress')">
+                    formControlName="PickupAddressRetirementArea">
+                <mat-error *ngIf="isValidField('PickupAddressRetirementArea')">
                   {{getErrorMessage('PickupAddress')}}
                 </mat-error>
               </mat-form-field>
@@ -186,7 +186,7 @@
               <mat-form-field>
                 <mat-label>Zona</mat-label>
                 <mat-select #zone
-                            (valueChange)="onSelectChange($event)"
+                            (valueChange)="onSelectChange($event, 1)"
                             [disabled]="!zonaSelectEnabled">
                   <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
                     {{ zonesLabelList[i] }}
@@ -196,16 +196,31 @@
             </td>
           </tr></table>
         </fieldset>
+        <!-- Mapa -->
+        <ng-container *ngIf="shipmentZoneMapEnabled" >
+          <google-map   class="map-s"
+                        #map
+                        [center]="shipmentZoneCenter"
+                        [zoom]="shipmentZoneZoom">
+
+          <map-marker [position]="shipmentZoneMarkerPosition"></map-marker>
+
+          <map-polygon [paths]="shipmentZonePolygonPoints"
+                       [options]="shipmentZonePolygonOptions"
+                       (polygonClick)="addMarker($event, 1)"
+                       ></map-polygon>
+          </google-map>
+        </ng-container>
           <!-- Direccion -->
           <mat-form-field
               class="fwhid"
-              [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddress') ? 0 : 40 }">
+              [ngStyle]="{ 'padding-bottom.px': !isValidField('PickupAddressShippingZone') ? 0 : 40 }">
             <input
                 type="text"
                 matInput
                 placeholder="Dirección"
-                formControlName="PickupAddress">
-            <mat-error *ngIf="isValidField('PickupAddress')">
+                formControlName="PickupAddressShippingZone">
+            <mat-error *ngIf="isValidField('PickupAddressShippingZone')">
               {{getErrorMessage('PickupAddress')}}
             </mat-error>
           </mat-form-field>
@@ -298,7 +313,7 @@
           </mat-form-field> -->
 
            <!-- Mapa -->
-           <ng-container *ngIf="mapEnabled" >
+           <!-- <ng-container *ngIf="mapEnabled" >
             <google-map   #map
                           [center]="center"
                           [zoom]="zoom">
@@ -310,7 +325,7 @@
                          (polygonClick)="addMarker($event)"
                          ></map-polygon>
             </google-map>
-          </ng-container>
+          </ng-container> -->
 
         </form>
         <div>

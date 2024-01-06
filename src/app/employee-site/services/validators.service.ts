@@ -18,7 +18,7 @@ export class ValidatorsService {
   public licencePattern: string = "^[A-Z]$|^[A-Z][0-9]$";
   public capacityPattern: string = "^[0-9]+$";
   public codePattern: string = "^[A-Z]{3}$";
-  public addressPattern: string = "^[a-z]{3}$";
+  public addressPattern: string = "^[a-zA-Z]{3,}$";
   public datePattern: string = "\d{2}/\d{2}/\d{4}";
   public celPattern: string = "^[0-9]{9}$";
   public phonePattern: string = "^[0-9]{8}$";
