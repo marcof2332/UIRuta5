@@ -15,13 +15,13 @@
             <mat-radio-button value="envioVentanilla">Envío por Ventanilla</mat-radio-button>
           </mat-radio-group>
           <div>
-            <button mat-button matStepperNext >Next</button>
+            <button mat-button matStepperNext >Siguiente</button>
           </div>
         </form>
       </mat-step>
 
       <!-- Step 2 - Retiro a Domicilio -->
-      <mat-step [stepControl]="myForm">
+      <mat-step>
         <ng-template matStepLabel>Paso 2</ng-template>
 
         <div class="example-container">
@@ -75,10 +75,10 @@
                   <mat-form-field>
                     <mat-label>Zona</mat-label>
                     <mat-select #zone
-                                (valueChange)="onSelectChange($event, 0)"
-                                [disabled]="!zonaSelectEnabled">
-                      <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
-                        {{ zonesLabelList[i] }}
+                                formControlName="PickupZone"
+                                (valueChange)="onSelectChange($event, 0)">
+                      <mat-option *ngFor="let item of CityZones; let i = index" [value]="item.IdZone">
+                        {{ item.ZoneName }}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -126,21 +126,29 @@
           </tr>
           <tr>
           <td>
-            <mat-form-field class="fwhid"
-              [ngStyle]="{ 'padding-bottom.px': !isValidField('Sender') ? 0 : 40 }">
-              <input matInput formControlName="Sender" placeholder="Remitente" type="number">
+            <mat-form-field class="fwhid" [ngStyle]="{ 'padding-bottom.px': !isValidField('Sender') ? 0 : 40 }">
+              <mat-label>Remitente</mat-label>
+              <mat-select formControlName="Sender" placeholder="Selecciona un remitente">
+                <mat-option *ngFor="let cliente of customers" [value]="cliente.DocRut">
+                  {{ cliente.CustomerName }} {{ cliente.CLastName }}
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="isValidField('Sender')">
-                {{getErrorMessage('Sender')}}
+                {{ getErrorMessage('Sender') }}
               </mat-error>
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="fwhid"
-              [ngStyle]="{ 'padding-bottom.px': !isValidField('Recipient') ? 0 : 40 }">
-              <input matInput formControlName="Recipient" placeholder="Destinatario" type="number">
-                <mat-error *ngIf="isValidField('Recipient')">
-                  {{getErrorMessage('Recipient')}}
-                </mat-error>
+            <mat-form-field class="fwhid" [ngStyle]="{ 'padding-bottom.px': !isValidField('Recipient') ? 0 : 40 }">
+              <mat-label>Destinatario</mat-label>
+              <mat-select formControlName="Recipient" placeholder="Selecciona un destinatario">
+                <mat-option *ngFor="let destinatario of customers" [value]="destinatario.DocRut">
+                  {{ destinatario.CustomerName }} {{ destinatario.CLastName }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="isValidField('Recipient')">
+                {{ getErrorMessage('Recipient') }}
+              </mat-error>
             </mat-form-field>
             </td>
           </tr></table>
@@ -186,10 +194,10 @@
               <mat-form-field>
                 <mat-label>Zona</mat-label>
                 <mat-select #zone
-                            (valueChange)="onSelectChange($event, 1)"
-                            [disabled]="!zonaSelectEnabled">
-                  <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
-                    {{ zonesLabelList[i] }}
+                            formControlName="TargetZone"
+                            (valueChange)="onSelectChange($event, 1)">
+                  <mat-option *ngFor="let item of CityZones; let i = index" [value]="item.IdZone">
+                    {{ item.ZoneName }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -231,105 +239,33 @@
           </form>
 
           <div>
-            <button mat-button matStepperPrevious (click)="resetForm()">Back</button>
-            <button mat-button matStepperNext (click)="firstSubmit()">Next</button>
+            <button mat-button matStepperPrevious (click)="resetForm()">Atras</button>
+            <button mat-button [disabled]="!myForm.get('retiroDomicilio')?.valid" (click)="saveHomePickup()">Siguiente</button>
           </div>
         </div>
       </mat-step>
-
-      <!-- Step 3 - Datos de Envío -->
-      <mat-step [stepControl]="getFormGroup()">
-        <ng-template matStepLabel>Paso 3</ng-template>
-        <form class="orderForm" [formGroup]="getFormGroup()">
-
-           <!-- <mat-form-field
-          [ngStyle]="{ 'padding-bottom.px': !isValidField('Sender') ? 0 : 40 }">
-            <input matInput formControlName="Sender" placeholder="Remitente" type="number">
-            <mat-error *ngIf="isValidField('Sender')">
-              {{getErrorMessage('Sender')}}
-            </mat-error>
-          </mat-form-field> -->
-
-          <!--<mat-form-field
-          [ngStyle]="{ 'padding-bottom.px': !isValidField('Recipient') ? 0 : 40 }">
-            <input matInput formControlName="Recipient" placeholder="Destinatario" type="number">
-            <mat-error *ngIf="isValidField('Recipient')">
-              {{getErrorMessage('Recipient')}}
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field
-          [ngStyle]="{ 'padding-bottom.px': !isValidField('RecipientCel') ? 0 : 40 }">
-            <input matInput formControlName="Celphone" placeholder="Celular" type="text">
-            <mat-error *ngIf="isValidField('RecipientCel')">
-              {{getErrorMessage('RecipientCel')}}
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Departamento</mat-label>
-            <mat-select #statesSh
-                        (valueChange)="loadCities($event)"
-                        [disabled]="!departamentoSelectEnabled">
-                <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
-                  {{ statesLabelList[i] }}
-                </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Ciudad</mat-label>
-            <mat-select #citiesSh
-                        (valueChange)="loadZones($event)"
-                        [disabled]="!ciudadSelectEnabled">
-                <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
-                {{ citiesLabelList[i] }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Zona</mat-label>
-            <mat-select #zoneSh
-                        (valueChange)="onSelectChange($event)"
-                        [disabled]="!zonaSelectEnabled">
-              <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
-                {{ zonesLabelList[i] }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>-->
-
-          <!-- Direccion -->
-          <!-- <mat-form-field
-              [ngStyle]="{ 'padding-bottom.px': !isValidField('TargetAddress') ? 0 : 40 }">
-            <input
-                type="text"
-                matInput
-                placeholder="Dirección"
-                formControlName="PickupAddress">
-            <mat-error *ngIf="isValidField('TargetAddress')">
-              {{getErrorMessage('TargetAddress')}}
-            </mat-error>
-          </mat-form-field> -->
-
-           <!-- Mapa -->
-           <!-- <ng-container *ngIf="mapEnabled" >
-            <google-map   #map
-                          [center]="center"
-                          [zoom]="zoom">
-
-            <map-marker [position]="markerPosition"></map-marker>
-
-            <map-polygon [paths]="polygonPoints"
-                         [options]="polygonOptions"
-                         (polygonClick)="addMarker($event)"
-                         ></map-polygon>
-            </google-map>
-          </ng-container> -->
-
-        </form>
+      <!-- Step 3 - Agregar paquetes -->
+      <mat-step>
+        <ng-template matStepLabel>Paso  3</ng-template>
+        <app-shippment-stages [shippmentId]="shippmentId" (packagesSelected)="handleSelectedPackages($event)"></app-shippment-stages>
         <div>
-          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperPrevious>Atras</button>
+          <button mat-button (click)="newShipmentRegister()">Siguiente</button>
+        </div>
+      </mat-step>
+      <!-- Step 4 - Datos de Envío -->
+      <mat-step>
+        <ng-template matStepLabel>Paso  4</ng-template>
+        <div class="success-message">
+          <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+            <i class="checkmark">✓</i>
+          </div>
+            <h1 class="success-message_title">Envio Generado</h1> 
+            <p class="success-message_text">Puedes seguirlo con tu numero de envio<br/><strong>N°: {{shippmentId}}</strong></p>
+        </div>
+        <div>
+          <button mat-button matStepperPrevious>Atras</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

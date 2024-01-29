@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeeSiteRoutingModule } from './employee-site-routing.module';
 import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -33,6 +33,7 @@ import { BranchOfficeComponent } from './pages/branch-office/branch-office.compo
 import { OfficeFormComponent } from './components/office-form/office-form.component';
 import { ShippmentListComponent } from './pages/shippment/shippment-list/shippment-list.component';
 import { ShippmentOrderComponent } from './pages/shippment/shippment-order/shippment-order.component';
+import { ShippmentStagesComponent } from './pages/shippment/shippment-order/shippment-stages/shippment-stages.component';
 
 export const MY_DATE_FORMATS = {
   parse: {
@@ -74,13 +75,15 @@ export const MY_DATE_FORMATS = {
     OfficeFormComponent,
     ShippmentListComponent,
     ShippmentOrderComponent,
+    ShippmentStagesComponent
   ],
   imports: [
     CommonModule,
     EmployeeSiteRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    FormsModule
   ],
   providers: [
       { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },

@@ -170,7 +170,7 @@ export class ShippmentListComponent implements OnInit {
           element.RecipientCel = element.Shippments.RecipientCel;
           element.TargetZone = element.Shippments.TargetZone;
           element.TargetAddress = element.Shippments.TargetAddress;
-          element.TargetLocation = element.Shippments.TargetLocation;
+          //element.TargetLocation = element.Shippments.TargetLocation;
         }
         if(element.PickUpLocation != undefined) {
           element.HomeOrDrop = "Si";

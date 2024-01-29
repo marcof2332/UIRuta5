@@ -60,6 +60,7 @@ export class AuthComponent {
       this.validatorsService.loginEmployee( this.currentUser )
       .subscribe( response => {
           console.log('Luego de ejecutar el metodo');
+          console.log(this.validatorsService.getUser(), "user");
           //Si se loguea satisfactoriamente
           this.dialogRef.close(true);
           this.isLoading = false;

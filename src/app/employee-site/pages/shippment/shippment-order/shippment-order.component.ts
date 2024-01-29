@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { StepperOrientation } from '@angular/material/stepper';
+import { MatStepper, StepperOrientation } from '@angular/material/stepper';
 import { Observable, map } from 'rxjs';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatSelect } from '@angular/material/select';
+import { ShippmentStagesComponent } from 'src/app/employee-site/pages/shippment/shippment-order/shippment-stages/shippment-stages.component';
 
 import { ValidatorsService } from 'src/app/employee-site/services/validators.service';
 import { StateService } from 'src/app/employee-site/services/state.service';
@@ -16,12 +17,22 @@ import { City } from 'src/app/Interfaces/cities.interface';
 import { Zone } from 'src/app/Interfaces/zone.interface';
 import { State } from 'src/app/Interfaces/state.interface';
 import { ShippmentList } from '../../../../Interfaces/list-shippment.interface';
+import { HomePickupsService } from 'src/app/employee-site/services/home-pickups.service';
+import { HomePickup } from 'src/app/Interfaces/home-pickup.interface';
+import { Shippment } from 'src/app/Interfaces/shippment.interface';
+import { Customer } from 'src/app/Interfaces/customers.interface';
+import { CustomerService } from 'src/app/employee-site/services/customer.service';
+import { Package } from 'src/app/Interfaces/package.interface';
+import { PackagesService } from 'src/app/employee-site/services/packages.service';
+import { ShippmentService } from 'src/app/employee-site/services/shippment.service';
+import { ShippmentStage } from 'src/app/Interfaces/shippment-stage.interface';
+import { ValidatorUserService } from 'src/app/public-site/services/validator-user.service';
 
 
 @Component({
   selector: 'shpp-mng',
   templateUrl: './shippment-order.component.html',
-  styleUrls: ['./shippment-order.component.css']
+  styleUrls: ['./shippment-order.component.css'],
 })
 export class ShippmentOrderComponent implements OnInit {
 
@@ -32,14 +43,18 @@ export class ShippmentOrderComponent implements OnInit {
   Zones: Zone[] = [];
   stateList: State[] = [];
 
+
   //#Select
   @ViewChild('stateselect') stateselect!: MatSelect;
-  zonesValueList: number[] = [];
-  zonesLabelList: string[] = [];
+  @ViewChild(MatStepper) stepper: MatStepper;
+  
+  CityZones: Zone[] = [];
   citiesValueList: number[] = [];
   citiesLabelList: string[] = [];
   statesValueList: number[] = [];
   statesLabelList: string[] = [];
+  customers: Customer[] = [];
+  addressTextBoxValue: string = "";
 
   departamentoSelectEnabled: boolean = true;
   ciudadSelectEnabled: boolean = false;
@@ -77,6 +92,10 @@ export class ShippmentOrderComponent implements OnInit {
   //
   //#Shippment
   shippment?: ShippmentList;
+  selectedPackages: Package[];
+  shippmentId: number;
+  newShippmentInstance: Shippment;
+  newHomePickup : HomePickup;
 
   constructor(
     private fb: FormBuilder,
@@ -87,16 +106,24 @@ export class ShippmentOrderComponent implements OnInit {
     private stateService: StateService,
     private zServ: ZoneService,
     private mapService: SharedmapdataService,
+    private homePickupService: HomePickupsService,
+    private customerService: CustomerService,
+    private packageService: PackagesService,
+    private shippmentService: ShippmentService,
+    private validatorUserService: ValidatorUserService,
+    private ngZone: NgZone
   ) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical')));
+
   }
 
   async ngOnInit() {
     await this.getStates();
     await this.getCities();
     await this.getZones();
+    this.getCustomers();
   }
 
   //Crea el formulario con los campos necesarios
@@ -114,7 +141,6 @@ export class ShippmentOrderComponent implements OnInit {
       Recipient: ['', Validators.required],
       RecipientCel: ['', Validators.required],
       TargetZone: ['', Validators.required],
-      TargetAddress: ['', Validators.required],
       TargetLocation: ['']
     }),
 
@@ -133,33 +159,6 @@ export class ShippmentOrderComponent implements OnInit {
     }),
   });
 
-  //Crea el formulario con los campos necesarios
-  // myForm: FormGroup = this.fb.group({
-  //   deliveryType: ['', Validators.required],
-  // });
-
-  // retiroDomicilio: FormGroup = this.fb.group({
-  //     StartTime: [''],
-  //     EndTime: [''],
-  //     Note: [''],
-  //     PickupAddress: ['',[ Validators.required, Validators.pattern(this.validatorsService.addressPattern)]],
-  //     PickupZone: ['', Validators.required],
-  //   });
-
-  // envioVentanilla: FormGroup = this.fb.group({
-  //     sucursal: ['', Validators.required]
-  //   });
-
-  // datosEnvio: FormGroup = this.fb.group({
-  //     Sender: ['', [Validators.required, Validators.pattern(this.validatorsService.empIdPattern) || Validators.pattern(this.validatorsService.RUTPattern)  ]],
-  //     Recipient: ['', [Validators.required, Validators.pattern(this.validatorsService.empIdPattern) || Validators.pattern(this.validatorsService.RUTPattern)  ]],
-  //     RecipientCel: ['', Validators.required],
-  //     TargetZone: ['', Validators.required],
-  //     TargetAddress: ['', Validators.required],
-  //     TargetLocation: ['']
-  //   });
-
-
   //Metodo para mostrar un snackbar con un mensaje
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'cerrar', {
@@ -170,7 +169,6 @@ export class ShippmentOrderComponent implements OnInit {
   // Método que se ejecutará cuando cambie la selección
   onRadioChange(event: any) {
     this.type = event.value;
-    console.log(this.type);
   }
 
   getFormGroup() {
@@ -183,21 +181,8 @@ export class ShippmentOrderComponent implements OnInit {
       case 'datosEnvio':
         return this.myForm.get('datosEnvio') as FormGroup;
       default:
-        console.log('test')
         return this.myForm;
     }
-
-    // switch (this.type) {
-    //     case 'retiroDomicilio':
-    //       return this.retiroDomicilio as FormGroup;
-    //     case 'envioVentanilla':
-    //       return this.envioVentanilla as FormGroup;
-    //     case 'datosEnvio':
-    //       console.log(this.datosEnvio)
-    //       return this.datosEnvio as FormGroup;
-    //     default:
-    //       return this.myForm;
-    //   }
   }
 
   async getStates() {
@@ -215,7 +200,6 @@ export class ShippmentOrderComponent implements OnInit {
       const result = await this.citiesService.listCities().toPromise();
       if (result) {
         this.Cities = result;
-        console.log(this.Cities);
       } else {
         console.error('Ocurrio un error al buscar las ciudades.');
       }
@@ -248,9 +232,7 @@ export class ShippmentOrderComponent implements OnInit {
       const c = this.Cities.filter(city => city.CityState == selectedState);
       this.citiesValueList = c.map(c => c.IdCity);
       this.citiesLabelList = c.map(c => c.CityName);
-      this.zonesValueList = [];
-      this.zonesLabelList = [];
-      console.log("Ciudades de estado", this.citiesValueList, this.citiesValueList)
+      this.CityZones = [];
     } else {
       this.showSnackBar('No se encontraron ciudades para el estado seleccionado.');
     }
@@ -260,18 +242,19 @@ export class ShippmentOrderComponent implements OnInit {
   }
 
   async loadZones(selectedCity: number) {
-
     const city = this.Cities.find(c => c.IdCity === selectedCity);
     if (city && city.Zones) {
-      const zones = city.Zones.filter(zone => zone.City === selectedCity);
-      if (zones) {
-        this.zonesValueList = zones.map(zone => zone.IdZone);
-        this.zonesLabelList = zones.map(zone => zone.ZoneName);
-        this.zonaSelectEnabled = true;
-      } else {
+      this.CityZones = city.Zones.filter(zone => zone.City === selectedCity);
+    }
+      else {
         this.showSnackBar('No se encontraron zonas para la ciudad seleccionada.');
       }
-    }
+  }
+
+  getCustomers() {
+    this.customerService.listCustomer().subscribe(list => {
+      this.customers = list
+    });
   }
 
   // Función para verificar si un marker está dentro del polígono de la zona
@@ -314,7 +297,6 @@ export class ShippmentOrderComponent implements OnInit {
       this.retirementZoneSelectedZone = this.Zones.find(zone => zone.IdZone === event);
       if (this.retirementZoneSelectedZone) {
         this.retirementZonePolygonPoints = this.mapService.convertToLatLangLiteral(this.retirementZoneSelectedZone);
-        console.log(this.retirementZonePolygonPoints);
         if (this.retirementZonePolygonPoints)
           this.retirementZoneCenter = this.mapService.calculateCenter(this.retirementZonePolygonPoints);
       } else
@@ -326,7 +308,6 @@ export class ShippmentOrderComponent implements OnInit {
       this.shipmentZoneSelectedZone = this.Zones.find(zone => zone.IdZone === event);
       if (this.shipmentZoneSelectedZone) {
         this.shipmentZonePolygonPoints = this.mapService.convertToLatLangLiteral(this.shipmentZoneSelectedZone);
-        console.log(this.shipmentZonePolygonPoints);
         if (this.shipmentZonePolygonPoints)
           this.shipmentZoneCenter = this.mapService.calculateCenter(this.shipmentZonePolygonPoints);
       } else
@@ -336,16 +317,13 @@ export class ShippmentOrderComponent implements OnInit {
   }
 
   addMarker(event: google.maps.PolyMouseEvent, zoneType: number) {
-    console.log('Clic dentro del polígono:', event);
     if (event.latLng != null) {
       if (zoneType === 0) {
         //Zona retiro
         this.retirementZoneMarkerPosition = event.latLng;
-        console.log(this.retirementZoneMarkerPosition)
 
         // Verifica si el marcador está dentro de la zona seleccionada
         const isInsideZone = this.isMarkerInsideZone(this.retirementZoneMarkerPosition, zoneType);
-        console.log(isInsideZone)
 
         if (isInsideZone == false) {
           this.showSnackBar('El marcador está fuera de la zona seleccionada.');
@@ -359,11 +337,9 @@ export class ShippmentOrderComponent implements OnInit {
       if (zoneType === 1) {
         //Zona envio
         this.shipmentZoneMarkerPosition = event.latLng;
-        console.log(this.shipmentZoneMarkerPosition)
 
         // Verifica si el marcador está dentro de la zona seleccionada
         const isInsideZone = this.isMarkerInsideZone(this.shipmentZoneMarkerPosition, zoneType);
-        console.log(isInsideZone)
 
         if (isInsideZone == false) {
           this.showSnackBar('El marcador está fuera de la zona seleccionada.');
@@ -371,6 +347,7 @@ export class ShippmentOrderComponent implements OnInit {
         }
         else {
           this.shipmentZoneMarkerPosition = event.latLng;
+          //this.getAddressFromCoordinates(this.shipmentZoneMarkerPosition.lat(), this.shipmentZoneMarkerPosition.lng())
           this.showSnackBar('Marcador agregado.');
         }
       }
@@ -385,7 +362,6 @@ export class ShippmentOrderComponent implements OnInit {
 
   //Metodo que me permite mostrar el mensaje del validador debajo del input
   getErrorMessage(field: string): string | null {
-    console.log(this.getFormGroup())
     return this.validatorsService.getErrorMessage(this.getFormGroup(), field);
   }
 
@@ -393,8 +369,7 @@ export class ShippmentOrderComponent implements OnInit {
     this.stateselect.value = null;
     this.citiesValueList = [];
     this.citiesLabelList = [];
-    this.zonesValueList = [];
-    this.zonesLabelList = [];
+    this.CityZones = [];
     this.departamentoSelectEnabled = true;
     this.ciudadSelectEnabled = false;
     this.zonaSelectEnabled = false;
@@ -417,5 +392,88 @@ export class ShippmentOrderComponent implements OnInit {
     this.type = 'datosEnvio'
   }
 
+  saveHomePickup(): void {
+    const form = this.getFormGroup();
+    this.newShippmentInstance = {
+      ReceiptDate: new Date(),
+      Sender: form.get('Sender')?.value,
+      Recipient: form.get('Recipient')?.value,
+      RecipientCel: form.get('RecipientCel')?.value,
+      TargetZone: form.get('TargetZone')?.value,
+      TargetAddress: form.get('PickupAddressShippingZone')?.value,
+      Latitude: this.shipmentZoneMarkerPosition.lat(),
+      Logitude: this.shipmentZoneMarkerPosition.lng()
+    };
+    this.newHomePickup = {
+      StartTime: form.get('StartTime')?.value,
+      EndTime: form.get('EndTime')?.value,
+      Note: form.get('Note')?.value,
+      PickupAddress: form.get('PickupAddressRetirementArea')?.value,
+      PickupZone: form.get('PickupZone')?.value,
+      Latitude: this.retirementZoneMarkerPosition.lat(),
+      Longitude: this.retirementZoneMarkerPosition.lng(),
+      Shippments: this.newShippmentInstance
+    };
+
+    this.stepper.next();
+  }
+
+  handleSelectedPackages(selectedPackages: Package[]) {
+    this.selectedPackages = selectedPackages;
+  }
+
+  newShipmentRegister() {
+    this.homePickupService.addHomePickup( this.newHomePickup ).subscribe(
+      (response) => {
+        this.shippmentId = response;
+        this.selectedPackages.forEach(element => {
+          element.Shippment = this.shippmentId;
+        });
+        this.newPackageRegister();
+    }, (error) => {
+      console.log("Error", error);
+      this.showSnackBar(`No se pudo generar el envio`);
+    });
+  }
+
+  newPackageRegister() {
+    this.packageService.addManyPackages(this.selectedPackages).subscribe(
+        (response) => {
+          this.newShippmentStageRegister();
+        },
+        (error) => {
+          this.showSnackBar('No se pudo registrar los paquetes.');
+        }
+      );
+  }
+
+  newShippmentStageRegister() {
+    const newShippmentStage: ShippmentStage = {
+      ShippmentID: this.shippmentId,
+      StageID: 1, //Por defecto siempre ingresa en estado 1-Ingresado
+      EmployeeID: this.validatorUserService.getUser().Id,
+      DateTimeStage: new Date()
+    }
+    this.shippmentService.addShippmentStages(newShippmentStage).subscribe(
+      (response) => {
+        this.stepper.next();
+      }, (error) => {
+        this.showSnackBar('No se pudo registrar los paquetes.');
+      });
+  }
+  // getAddressFromCoordinates(latitude: number, longitude: number): void {
+  //   const geocoder = new google.maps.Geocoder();
+
+  //   geocoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+  //     if (status === 'OK') {
+  //       if (results != null && results[0]) {
+  //         this.ngZone.run(() => {
+  //           // Actualizar el valor del cuadro de texto con la dirección
+  //           this.addressTextBoxValue = results[0].formatted_address;
+  //           console.log(this.addressTextBoxValue);
+  //         });
+  //       }
+  //     }
+  //   });}
 
 }

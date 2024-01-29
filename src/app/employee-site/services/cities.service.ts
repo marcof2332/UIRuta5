@@ -19,8 +19,7 @@ export class CitiesService {
     ) {}
 
   listCities(): Observable<City[]> {
-    return this.http.get<City[]>(`${ this.APIUrl }` + this.serviceRoute)
-      .pipe(catchError((error) => this.publicservice.handleError(error)));
+    return this.http.get<City[]>(`${ this.APIUrl }` + this.serviceRoute);
   }
 
   addCity(cy: City) {

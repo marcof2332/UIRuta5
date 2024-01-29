@@ -26,6 +26,10 @@ export class ValidatorUserService {
     required: 'Este campo es requerido.',
   };
 
+  public getUser() {
+    return this.user;
+  }
+
   public getErrorMessage(form: FormGroup, field: string): string | null {
     const control = form.get(field);
 
