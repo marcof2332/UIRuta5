@@ -1,0 +1,141 @@
+<div mat-dialog-content>
+    <form class="shared-form" [formGroup]="myForm">
+        <div *ngIf=" resulthp != null">
+            <ng-container >
+                            <mat-form-field class="fwhid">
+                            <mat-label>Disp. inicio</mat-label>
+                                <input
+                                    type="datetime"
+                                    matInput
+                                    formControlName="StartTime">
+                            </mat-form-field>
+
+                            <mat-form-field class="fwhid">
+                                <mat-label>Disp. Final</mat-label>
+                                <input
+                                    type="datetime"
+                                    matInput
+                                    formControlName="EndTime">
+                            </mat-form-field>
+
+
+                            <mat-form-field class="fwhid">
+                            <mat-label>Comentarios</mat-label>
+                            <textarea matInput formControlName="Note">
+                                {{resulthp.Note}}
+                            </textarea>
+                            </mat-form-field>
+
+                            <mat-form-field class="fwhid">
+                            <mat-label>Direccion de retiro</mat-label>
+                            <input
+                                type="text"
+                                matInput
+                                formControlName="PickupAddress">
+                            </mat-form-field>
+
+                            <mat-form-field class="fwhid">
+                            <mat-label>Zona de retiro</mat-label>
+                            <input
+                                type="text"
+                                matInput
+                                [value]="resulthp.Zones.ZoneName"
+                                >                    
+                            </mat-form-field>
+
+                <ng-container>
+                    <legend class="lgn">Punto de retiro</legend>
+                    <google-map   class="map-s"
+                                #map
+                                [center]="retirementcenter"
+                                [zoom]="zoom"
+                                >
+    
+                    <map-marker [position]="retirementZoneMarkerPosition"></map-marker>
+                    </google-map>
+                </ng-container>
+            </ng-container>  
+        </div>
+        <div *ngIf="resultdp != null">
+            <ng-container>
+
+                    <mat-form-field class="fwhid">
+                        <mat-label>Sucursal</mat-label>
+                        <input
+                            type="text"
+                            matInput
+                            [value]="resultdp.BranchOffices.BranchAddress">
+                            <!-- {{resultdp.BranchOffice}} -->
+                    </mat-form-field>
+
+                    <mat-form-field class="fwhid m">
+                    <mat-label>Comentarios</mat-label>
+                    <textarea matInput formControlName="Note">
+                        <!-- {{resultdp.Note}} -->
+                    </textarea>
+                    </mat-form-field>
+
+            </ng-container>
+        </div>
+                <mat-form-field class="fwhid">
+                    <mat-label>Fecha de ingreso</mat-label>
+                    <input
+                        type="text"
+                        matInput
+                        formControlName="ReceiptDate">
+                </mat-form-field>
+
+            <mat-form-field class="fwhid">
+                <mat-label>Remitente</mat-label>
+                <input 
+                    type="text"
+                    matInput
+                    formControlName="Sender">
+            </mat-form-field>
+
+                <mat-form-field class="fwhid">
+                    <mat-label>Destinatario</mat-label>
+                        <input 
+                        type="text"
+                        matInput
+                        formControlName="Recipient">
+                </mat-form-field>
+
+                <mat-form-field class="fwhid">
+                    <mat-label>Celular</mat-label>
+                        <input 
+                        matInput 
+                        formControlName="RecipientCel" 
+                        type="text">
+                </mat-form-field>
+
+                <mat-form-field class="fwhid">
+                    <mat-label>Zona de envio</mat-label>
+                        <input 
+                        matInput 
+                        [value]="item.Shippments.Zones.ZoneName" 
+                        type="text">
+                </mat-form-field>
+
+                <mat-form-field class="fwhid">
+                    <mat-label>Direccion de envio</mat-label>
+                        <input 
+                        matInput 
+                        formControlName="TargetAddress" 
+                        type="text">
+                </mat-form-field>
+                <ng-container>
+                    <legend class="lgn">Punto de envio</legend>
+                    <google-map class="map-s"
+                    #map
+                    [center]="shipmentcenter"
+                    [zoom]="zoom">
+
+                    <map-marker [position]="shipmentZoneMarkerPosition"></map-marker>
+                    </google-map>
+                </ng-container>
+            <div mat-dialog-actions>
+                <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+            </div>
+    </form>
+</div>

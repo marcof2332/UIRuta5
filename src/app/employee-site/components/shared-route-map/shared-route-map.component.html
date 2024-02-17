@@ -1,0 +1,34 @@
+<div>
+  <mat-nav-list class="matnav details">
+      <mat-expansion-panel>
+          <mat-expansion-panel-header (click)="viewDetail()">
+              Ver detalle
+          </mat-expansion-panel-header>
+          <p> Recorrido total: {{distance / 1000}} kms</p>
+          <p> Tiempo: {{time}}</p>
+          <mat-accordion *ngFor="let point of points">
+              <mat-expansion-panel class="section">
+                  <mat-expansion-panel-header>
+                      {{point.id | pointPipe}}
+                  </mat-expansion-panel-header>
+                  <p>{{point.distance}}</p>
+                  <p>{{point.duration}}</p>
+                  <p>{{point.startLocation.address}}</p>
+                  <p>{{point.endLocation.address}}</p>
+              </mat-expansion-panel>
+          </mat-accordion>
+
+      </mat-expansion-panel>
+  </mat-nav-list>
+
+  <div id="map">
+  </div>
+</div>
+
+
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCxsaHUv69on12iPTJiDEQmvRKIjvIzosE&callback=initMap&libraries=&v=weekly"
+  async>
+  </script>

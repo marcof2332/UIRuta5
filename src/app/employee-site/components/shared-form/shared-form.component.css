@@ -1,0 +1,13 @@
+
+.shared-form {
+  display: flex;
+  flex-direction: column;
+  margin:1rem auto;
+  max-height: fit-content;
+  padding: 1rem;
+  width: 700px
+}
+
+.mat-mdc-form-field-infix {
+  display: flex !important;
+}

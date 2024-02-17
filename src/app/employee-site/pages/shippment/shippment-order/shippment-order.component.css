@@ -1,0 +1,103 @@
+.demo-stepper {
+  margin-top: 8px;
+}
+
+.demo-form-field {
+  margin-top: 16px;
+}
+
+.sh-radiogroup {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.demo-radio-button {
+  margin: 5px;
+}
+
+.example-container {
+  position: relative;
+  margin: auto;
+  width: 70%;
+  margin-top: 50px;
+  overflow-y: auto;
+}
+
+.orderForm {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.map-s {
+  padding-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.fwhid {
+  width: 100%;
+}
+
+.zone-container {
+  border: 1px solid #ccc;
+  /* Borde alrededor del contenedor */
+  padding: 10px;
+  /* Espaciado interno */
+  margin-bottom: 20px;
+  /* Margen inferior para separar de otros elementos */
+}
+
+.zone-container .legend {
+  color: #333;
+  /* Color del texto del label */
+  padding: 0 10px;
+  /* Espaciado del label */
+  background-color: #fff;
+  /* Fondo del label */
+}
+
+.propcont {
+  display: flex;
+}
+
+.f-fields {
+  width: -webkit-fill-available;
+}
+
+.lgn {
+  font-size: 1rem !important;
+}
+
+.m {
+  margin-top: 20px;
+}
+
+.success-message {
+  text-align: center;
+  padding: 40px 0;
+  background: white;
+}
+
+i {
+  color: #9ABC66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left: -15px;
+}
+
+.success-message_title {
+  margin-top: 10px;
+  color: #88B04B;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-weight: 900;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.success-message_text {
+  color: #404F5E;
+  font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+  font-size:20px;
+  margin: 20px 10px 10px 10px;
+}

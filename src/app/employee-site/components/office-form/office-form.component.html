@@ -1,0 +1,93 @@
+<div mat-dialog-content>
+  <form class="shared-form" [formGroup]="myForm" (ngSubmit)="handleSubmit()">
+
+    <!-- estado -->
+    <mat-form-field>
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="OfficeState" (valueChange)="loadCities($event)" >
+          <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+            {{ statesLabelList[i] }}
+          </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('OfficeState')">
+        {{getErrorMessage('OfficeState')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- ciudad -->
+    <mat-form-field>
+      <mat-label>Ciudad</mat-label>
+      <mat-select formControlName="OfficeCity" (valueChange)="loadZones($event)">
+        <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+          {{ citiesLabelList[i] }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('OfficeCity')">
+        {{getErrorMessage('OfficeCity')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Zona -->
+    <mat-form-field>
+      <mat-label>Zona</mat-label>
+      <mat-select formControlName="Zone" (selectionChange)="onZoneSelectionChange($event)">
+          <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+            {{ zonesLabelList[i] }}
+          </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('Zone')">
+        {{getErrorMessage('Zone')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Direccion -->
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('BranchAddress') ? 0 : 40 }">
+      <input matInput formControlName="BranchAddress" placeholder="Dirección" type="text">
+      <mat-error *ngIf="isValidField('BranchAddress')">
+        {{getErrorMessage('BranchAddress')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Telefono -->
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('Phone') ? 0 : 40 }">
+      <input matInput formControlName="Phone" placeholder="Telefono" type="text">
+      <mat-error *ngIf="isValidField('Phone')">
+        {{getErrorMessage('Phone')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Apertura</mat-label>
+      <input matInput type="time" formControlName="OpTime" >
+      <mat-error *ngIf="isValidField('OpTime')">
+        {{getErrorMessage('OpTime')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cierre</mat-label>
+      <input matInput type="time" formControlName="CloseTime">
+      <mat-error *ngIf="isValidField('CloseTime')">
+        {{getErrorMessage('CloseTime')}}
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Mapa -->
+    <ng-container *ngIf="mapEnabled" >
+      <google-map   #map
+                    [center]="center"
+                    [zoom]="zoom"
+                    (mapClick)="addMarker($event)">
+
+      <map-marker [position]="markerPosition"></map-marker>
+      </google-map>
+    </ng-container>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+      <button mat-button type="submit"><mat-icon>done</mat-icon>Confirmar</button>
+    </div>
+  </form>
+</div>

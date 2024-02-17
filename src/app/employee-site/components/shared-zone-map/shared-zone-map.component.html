@@ -1,0 +1,15 @@
+<google-map #mapShared
+            [center]="center"
+            [zoom]="zoom">
+
+    <map-marker  *ngFor="let markerPosition of markerPositions; let i = index"
+                  [position]="markerPosition"
+                  [options]="markerOptions"></map-marker>
+
+  <map-polygon [paths]="polygonPoints"></map-polygon>
+
+</google-map>
+
+<div mat-dialog-actions class="button-container">
+  <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cerrar</button>
+</div>

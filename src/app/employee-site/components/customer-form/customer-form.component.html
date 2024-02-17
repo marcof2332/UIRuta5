@@ -1,0 +1,85 @@
+<div mat-dialog-content>
+  <form class="shared-form" [formGroup]="myForm" (ngSubmit)="handleSubmit()">
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('DocRut') ? 0 : 40 }">
+      <input matInput formControlName="DocRut" placeholder="Cédula/RUT" type="number">
+      <mat-error *ngIf="isValidField('DocRut')">
+        {{getErrorMessage('DocRut')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('CustomerName') ? 0 : 40 }">
+      <input matInput formControlName="CustomerName" placeholder="Nombre" type="text">
+      <mat-error *ngIf="isValidField('CustomerName')">
+        {{getErrorMessage('CustomerName')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('CLastName') ? 0 : 40 }">
+      <input matInput formControlName="CLastName" placeholder="Apellido" type="text">
+      <mat-error *ngIf="isValidField('CLastName')">
+        {{getErrorMessage('CLastName')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('Celphone') ? 0 : 40 }">
+      <input matInput formControlName="Celphone" placeholder="Celular" type="text">
+      <mat-error *ngIf="isValidField('Celphone')">
+        {{getErrorMessage('Celphone')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Departamento</mat-label>
+      <mat-select formControlName="ClientState" (valueChange)="loadCities($event)">
+          <mat-option *ngFor="let item of statesValueList; let i = index" [value]="item" >
+            {{ statesLabelList[i] }}
+          </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('ClientState')">
+        {{getErrorMessage('ClientState')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ciudad</mat-label>
+      <mat-select formControlName="ClientCity" (valueChange)="loadZones($event)">
+        <mat-option *ngFor="let item of citiesValueList; let i = index" [value]="item">
+          {{ citiesLabelList[i] }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('ClientCity')">
+        {{getErrorMessage('ClientCity')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Zona</mat-label>
+      <mat-select formControlName="ClientZone">
+        <mat-option *ngFor="let item of zonesValueList; let i = index" [value]="item">
+          {{ zonesLabelList[i] }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="isValidField('ClientZone')">
+        {{getErrorMessage('ClientZone')}}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+    [ngStyle]="{ 'padding-bottom.px': !isValidField('CliAddress') ? 0 : 40 }">
+      <input matInput formControlName="CliAddress" placeholder="Dirección" type="text">
+      <mat-error *ngIf="isValidField('CliAddress')">
+        {{getErrorMessage('CliAddress')}}
+      </mat-error>
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+      <button mat-button type="submit"><mat-icon>done</mat-icon>Confirmar</button>
+    </div>
+  </form>
+</div>

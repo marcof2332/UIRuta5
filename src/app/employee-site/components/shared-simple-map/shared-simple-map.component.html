@@ -1,0 +1,11 @@
+<google-map #mapShared
+            [center]="center"
+            [zoom]="zoom">
+
+    <map-marker [position]="markerPosition"></map-marker>
+
+</google-map>
+
+<div mat-dialog-actions class="button-container">
+  <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cerrar</button>
+</div>

@@ -1,0 +1,58 @@
+<mat-sidenav-container fullscreen>
+
+  <mat-sidenav #sidenav mode="push" [ngStyle]="{ width: '250px'}">
+
+    <mat-toolbar>
+      <span>Menu</span>
+      <span class="spacer"></span>
+      <button class="mat-icon-button" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <mat-nav-list>
+      <ng-container *ngFor="let item of sidebarItems">
+        <ng-container *ngIf="!item.children; else subItems">
+          <!-- Mostrar elementos principales -->
+          <mat-list-item  [routerLink]="item.url" (click)="sidenav.toggle()">
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span mat-line>{{ item.label }}</span>
+          </mat-list-item>
+        </ng-container>
+
+        <!-- Mostrar elementos principales y subpáginas -->
+        <ng-template #subItems>
+          <mat-list-item [matMenuTriggerFor]="subMenu">
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span mat-line>{{ item.label }}</span>
+          </mat-list-item>
+          <mat-menu #subMenu="matMenu">
+            <button mat-menu-item *ngFor="let subitem of item.children" [routerLink]="subitem.url" (click)="sidenav.toggle()">
+              {{ subitem.label }}
+            </button>
+          </mat-menu>
+        </ng-template>
+      </ng-container>
+
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="spacer"></span>
+    <span></span>
+
+    <button mat-button (click)="logOut()">
+      Logout
+    </button>
+
+  </mat-toolbar>
+
+  <div class="layout-container">
+    <router-outlet></router-outlet>
+  </div>
+</mat-sidenav-container>

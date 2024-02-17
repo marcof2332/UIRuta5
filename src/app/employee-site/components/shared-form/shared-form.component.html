@@ -1,0 +1,46 @@
+<div mat-dialog-content>
+  <form class="shared-form" [formGroup]="myForm" (ngSubmit)="handleSubmit()">
+
+    <mat-form-field
+      *ngFor="let field of formFields"
+      [ngStyle]="{ 'padding-bottom.px': !isValidField(field.formControlName) ? 0 : 40 }">
+      <mat-label>{{field.label}}</mat-label>
+
+      <input
+        *ngIf="field.type == 'text' || field.type == 'button' || field.type == 'number'"
+        matInput
+        type={{field.type}}
+        [value]="myForm.get(field.formControlName)?.value"
+        (input)="onInputChange(field.formControlName, $event)"
+        formControlName={{field.formControlName}}>
+
+      <ng-container *ngIf="field.type == 'date'">
+        <input
+          matInput
+          type={{field.type}}
+          [matDatepicker]="dp3"
+          formControlName="{{field.formControlName}}">
+        <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 ></mat-datepicker>
+      </ng-container>
+
+      <mat-select *ngIf="field.type == 'select'" [formControlName]="field.formControlName">
+        <ng-container *ngIf="field.optionsLabel && field.optionsValue && field.optionsLabel.length === field.optionsValue.length">
+          <mat-option *ngFor="let itemValue of field.optionsValue; let i = index" [value]="itemValue">
+            {{ field.optionsLabel[i]?.toString() }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+
+      <mat-error *ngIf="isValidField(field.formControlName)">
+        {{getErrorMessage(field.formControlName)}}
+      </mat-error>
+
+    </mat-form-field>
+
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()"><mat-icon>close</mat-icon>Cancelar</button>
+      <button mat-button type="submit"><mat-icon>done</mat-icon>Confirmar</button>
+    </div>
+  </form>
+</div>

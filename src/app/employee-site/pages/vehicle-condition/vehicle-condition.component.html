@@ -1,0 +1,15 @@
+<div class="example-container">
+  <h2>Administración de estados de vehiculo</h2>
+
+    <ng-container *ngIf="dataLoaded">
+        <app-shared-table
+        [dataSource]="dataSource"
+        [columns]="columns">
+        [resultsLength]="resultsLength"
+        </app-shared-table>
+    </ng-container>
+
+    <div class="button-container">
+      <button mat-raised-button (click)="openDialogToAdd()"><mat-icon>save</mat-icon>Agregar Estado</button>
+    </div>
+</div>

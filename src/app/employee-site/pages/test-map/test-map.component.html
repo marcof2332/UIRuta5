@@ -1,0 +1,17 @@
+
+<google-map [center]="center"
+            [zoom]="zoom"
+            (mapClick)="addMarker($event)"
+            >
+
+  <map-marker *ngFor="let markerPosition of markerPositions; let i = index"
+                [position]="markerPosition"
+                [options]="markerOptions"
+                (click)="markerClick(i)"></map-marker>
+
+  <map-polygon [paths]="polygonPoints"></map-polygon>
+
+</google-map>
+
+<button (click)="removeLastMarker()">Eliminar Último Punto</button>
+<button (click)="clearPolygon()">Limpiar Polígono</button>
